@@ -7,6 +7,7 @@
 ```
 train.head()
 ```
+![](https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCbS3CUeibENjz7DAGKZaIx8ia3bad78Y2oZz8XQTMF1h2szXjM2lDADx5F7DZGsJESMZSgITawyqyQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
 
 ##### 观察训练集中预测值的分布情况
 ```
@@ -22,4 +23,4 @@ ax.set(title="SalePrice distribution")
 sns.despine(trim=True, left=True)
 plt.show()
 ```
-![训练集中预测值的分布情况](https://www.kaggleusercontent.com/kf/15425540/eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..pNKpx8_CeoQisuhcwZ4Yeg.FXDneIjyHdX--MbtjlXjs2ndp02Me5hADRWRp5T2kgeWkpJBJFgGnzj5A-nEohAHXScM6QHWl3GO9Aek69pPAL9xwZHXgr2EAjLmqEl7ApM4Ov8Kc5DipP5QArNRg3H7ryuX1jIo3XL0l6U0kzJ10saOX8TaaGIq6ozK7q_YuXHpRZJTsC5D8646FzBk7WYt.rbzFz2nnm-Y3X_8onDyPDQ/__results___files/__results___10_0.png)
+![训练集中预测值的分布情况](https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCbS3CUeibENjz7DAGKZaIx8m01oqgjyzVpcpicR5icNFCZJab7ZoGoGQayK1icujFHnU3eSiaA1AcGljw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
