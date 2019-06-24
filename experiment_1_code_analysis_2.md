@@ -121,3 +121,13 @@ data = pd.concat([train['SalePrice'], train['GrLivArea']], axis=1)
 data.plot.scatter(x='GrLivArea', y='SalePrice', alpha=0.3, ylim=(0,800000));
 ```
 ![散点图展示“销售价格”和“GrLivArea”间的关系](./img/scatter_saleprice_GrLivArea.jpg)
+
+5. 移除“Id”属性列，因为Id对于每一行数据来说都是独立的，因此对于构建模型没有意思
+```
+train_ID = train['Id']
+test_ID = test['Id']
+train.drop(['Id'], axis=1, inplace=True)
+test.drop(['Id'], axis=1, inplace=True)
+train.shape, test.shape
+```
+![移除“Id”属性列后训练集和测试集的情况](./img/remove_id_train_test_shape.jpg)
