@@ -249,7 +249,7 @@ all_features['YrSold'] = all_features['YrSold'].astype(str)
 all_features['MoSold'] = all_features['MoSold'].astype(str)
 ```
 
-8.
+8. 缺失值处理操作
 ```
 def handle_missing(features):
     # the data description states that NA refers to typical ('Typ') values
@@ -307,3 +307,58 @@ df_miss[0:10]
 ![处理后缺失情况的展示]()
 
 可以看到现在已经没有缺失数据了。
+
+9. 下面来处理正态分布歪斜的其他特征
+首先，获取所有数值型特征
+```
+numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+numeric = []
+for i in all_features.columns:
+    if all_features[i].dtype in numeric_dtypes:
+        numeric.append(i)
+```
+之后，对这些数值型特征创建箱图展示
+```
+sns.set_style("white")
+f, ax = plt.subplots(figsize=(8, 7))
+ax.set_xscale("log")
+ax = sns.boxplot(data=all_features[numeric] , orient="h", palette="Set1")
+ax.xaxis.grid(False)
+ax.set(ylabel="Feature names")
+ax.set(xlabel="Numeric values")
+ax.set(title="Numeric Distribution of Features")
+sns.despine(trim=True, left=True)
+```
+![数值型特征的箱图展示](./img/box_other_numeric_features.png)
+
+然后，找出存在歪斜的数值型特征
+```
+skew_features = all_features[numeric].apply(lambda x: skew(x)).sort_values(ascending=False)
+
+high_skew = skew_features[skew_features > 0.5]
+skew_index = high_skew.index
+
+print("There are {} numerical features with Skew > 0.5 :".format(high_skew.shape[0]))
+skewness = pd.DataFrame({'Skew' :high_skew})
+skew_features.head(10)
+```
+![存在歪斜的特征列表](./img/other_skewed_features_list.png)
+
+现在，我们使用scipy库中的boxcox1p函数来完成Box-Cox之间的歪斜特征标准化转换。这样做的目的是找到一种简单的标准化数据的方式。
+```
+for i in skew_index:
+    all_features[i] = boxcox1p(all_features[i], boxcox_normmax(all_features[i] + 1))
+```
+通过可视化的方式来确认我们已经将所有存在歪斜的值修正。
+```
+sns.set_style("white")
+f, ax = plt.subplots(figsize=(8, 7))
+ax.set_xscale("log")
+ax = sns.boxplot(data=all_features[skew_index] , orient="h", palette="Set1")
+ax.xaxis.grid(False)
+ax.set(ylabel="Feature names")
+ax.set(xlabel="Numeric values")
+ax.set(title="Numeric Distribution of Features")
+sns.despine(trim=True, left=True)
+```
+![修正歪斜后的其他特征](./img/fix_skew_features.png)
