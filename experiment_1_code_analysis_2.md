@@ -31,3 +31,43 @@ print("Skewness: %f" % train['SalePrice'].skew())
 print("Kurtosis: %f" % train['SalePrice'].kurt())
 ```
 ![正态分布的歪斜(Skewness)和峭度(Kurtosis)](./img/skewness_kurtosisi.png)
+
+##### 深度挖掘特征
+首先对数据的特征进行可视化
+1. 提取出数据中为数值型的特征
+```
+# Finding numeric features
+numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+numeric = []
+for i in train.columns:
+    if train[i].dtype in numeric_dtypes:
+        if i in ['TotalSF', 'Total_Bathrooms','Total_porch_sf','haspool','hasgarage','hasbsmt','hasfireplace']:
+            pass
+        else:
+            numeric.append(i)     
+```
+2. 以散点图对内容进行展示
+```
+# visualising some more outliers in the data values
+fig, axs = plt.subplots(ncols=2, nrows=0, figsize=(12, 120))
+plt.subplots_adjust(right=2)
+plt.subplots_adjust(top=2)
+sns.color_palette("husl", 8)
+for i, feature in enumerate(list(train[numeric]), 1):
+    if(feature=='MiscVal'):
+        break
+    plt.subplot(len(list(numeric)), 3, i)
+    # 以散点图对内容进行展示
+    sns.scatterplot(x=feature, y='SalePrice', hue='SalePrice', palette='Blues', data=train)
+        
+    plt.xlabel('{}'.format(feature), size=15,labelpad=12.5)
+    plt.ylabel('SalePrice', size=15, labelpad=12.5)
+    
+    for j in range(2):
+        plt.tick_params(axis='x', labelsize=12)
+        plt.tick_params(axis='y', labelsize=12)
+    
+    plt.legend(loc='best', prop={'size': 10})
+        
+plt.show()
+```
