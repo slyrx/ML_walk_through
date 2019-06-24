@@ -172,3 +172,26 @@ print('GradientBoosting')
 gbr_model_full_data = gbr.fit(X, train_labels)
 ```
 ![GradientBoosting]()
+
+
+##### 混合模型并进行预测
+1. 为了能够让最终的预测结果具有更好的鲁棒性以避免过拟合，因此进行模型混合
+```
+def blended_predictions(X):
+    return ((0.1 * ridge_model_full_data.predict(X)) + \
+            (0.2 * svr_model_full_data.predict(X)) + \
+            (0.1 * gbr_model_full_data.predict(X)) + \
+            (0.1 * xgb_model_full_data.predict(X)) + \
+            (0.1 * lgb_model_full_data.predict(X)) + \
+            (0.05 * rf_model_full_data.predict(X)) + \
+            (0.35 * stack_gen_model.predict(np.array(X))))
+```
+
+2. 通过混合模型得出预测结果
+```
+blended_score = rmsle(train_labels, blended_predictions(X))
+scores['blended'] = (blended_score, 0)
+print('RMSLE score on train data:')
+print(blended_score)
+```
+![RMSLE score on train data]()
