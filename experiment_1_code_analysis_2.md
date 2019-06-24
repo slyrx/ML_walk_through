@@ -99,7 +99,7 @@ fig = sns.boxplot(x=train['YearBuilt'], y="SalePrice", data=data)
 fig.axis(ymin=0, ymax=800000);
 plt.xticks(rotation=45);
 ```
-![以箱图展示“销售价格”和“YearBuilt”间的关系](./img/box_saleprice_overallqual.jpg)
+![以箱图展示“销售价格”和“YearBuilt”间的关系](./img/box_saleprice_yearbuilt.jpg)
 
 + 以散点图展示“销售价格”和“TotalBsmtSF”间的关系
 ```
@@ -113,11 +113,11 @@ data.plot.scatter(x='TotalBsmtSF', y='SalePrice', alpha=0.3, ylim=(0,800000));
 data = pd.concat([train['SalePrice'], train['LotArea']], axis=1)
 data.plot.scatter(x='LotArea', y='SalePrice', alpha=0.3, ylim=(0,800000));
 ```
-![散点图展示“销售价格”和“LotArea”间的关系](./img/scatter_saleprice_totalBsmtsf.jpg)
+![散点图展示“销售价格”和“LotArea”间的关系](./img/scatter_saleprice_lotArea.jpg)
 
 + 散点图展示“销售价格”和“GrLivArea”间的关系
 ```
 data = pd.concat([train['SalePrice'], train['GrLivArea']], axis=1)
 data.plot.scatter(x='GrLivArea', y='SalePrice', alpha=0.3, ylim=(0,800000));
 ```
-![散点图展示“销售价格”和“GrLivArea”间的关系](./img/scatter_saleprice_totalBsmtsf.jpg)
+![散点图展示“销售价格”和“GrLivArea”间的关系](./img/scatter_saleprice_GrLivArea.jpg)
