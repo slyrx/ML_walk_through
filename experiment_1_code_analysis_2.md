@@ -362,3 +362,5 @@ ax.set(title="Numeric Distribution of Features")
 sns.despine(trim=True, left=True)
 ```
 ![修正歪斜后的其他特征](./img/fix_skew_features.png)
+
+现在，我们得到的所有特征都变成了正态分布了。
