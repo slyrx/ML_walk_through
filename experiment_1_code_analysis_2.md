@@ -24,3 +24,10 @@ sns.despine(trim=True, left=True)
 plt.show()
 ```
 ![训练集中预测值的分布情况](https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCbS3CUeibENjz7DAGKZaIx8m01oqgjyzVpcpicR5icNFCZJab7ZoGoGQayK1icujFHnU3eSiaA1AcGljw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+##### 显示正态分布的歪斜(Skewness)和峭度(Kurtosis)
+```
+print("Skewness: %f" % train['SalePrice'].skew())
+print("Kurtosis: %f" % train['SalePrice'].kurt())
+```
+![正态分布的歪斜(Skewness)和峭度(Kurtosis)](./img/skewness_kurtosisi.png)
