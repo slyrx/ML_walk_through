@@ -135,4 +135,6 @@ for i, feature in enumerate(list(X[numeric]), 1):
         
 plt.show()
 ```
-![]()
+![重建的数据可视化展示](./img/recreate_features_visualize.jpg)
+
+
