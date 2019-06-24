@@ -131,3 +131,114 @@ test.drop(['Id'], axis=1, inplace=True)
 train.shape, test.shape
 ```
 ![移除“Id”属性列后训练集和测试集的情况](./img/remove_id_train_test_shape.jpg)
+
+##### 特征工程
+1. 再次查看 “SalePrice” 的分布情况
+```
+sns.set_style("white")
+sns.set_color_codes(palette='deep')
+f, ax = plt.subplots(figsize=(8, 7))
+#Check the new distribution 
+sns.distplot(train['SalePrice'], color="b");
+ax.xaxis.grid(False)
+ax.set(ylabel="Frequency")
+ax.set(xlabel="SalePrice")
+ax.set(title="SalePrice distribution")
+sns.despine(trim=True, left=True)
+plt.show()
+```
+![“SalePrice” 的分布情况]()
+
+2. 可以看到，“SalePrice”的分布显示向右偏斜。这对于大多数机器学习模型是一个问题，因为大部分的模型对于非正态分布的数据处理的不好。因此，接下来我们使用 **对数函数log(1+x)** 来修正这个偏斜的情况。
+```
+train["SalePrice"] = np.log1p(train["SalePrice"])
+```
+现在再将修改了分布的 SalePrice 画图展示。
+```
+sns.set_style("white")
+sns.set_color_codes(palette='deep')
+f, ax = plt.subplots(figsize=(8, 7))
+#Check the new distribution 
+sns.distplot(train['SalePrice'] , fit=norm, color="b");
+
+# Get the fitted parameters used by the function
+(mu, sigma) = norm.fit(train['SalePrice'])
+print( '\n mu = {:.2f} and sigma = {:.2f}\n'.format(mu, sigma))
+
+#Now plot the distribution
+plt.legend(['Normal dist. ($\mu=$ {:.2f} and $\sigma=$ {:.2f} )'.format(mu, sigma)],
+            loc='best')
+ax.xaxis.grid(False)
+ax.set(ylabel="Frequency")
+ax.set(xlabel="SalePrice")
+ax.set(title="SalePrice distribution")
+sns.despine(trim=True, left=True)
+
+plt.show()
+```
+![正态分布参数]()
+![修正后的正态分布图]()
+
+现在，SalePrice已经变成了标准的正态分布，这正是我们想要的。
+
+3. 下面来删除极端值
+```
+train.drop(train[(train['OverallQual']<5) & (train['SalePrice']>200000)].index, inplace=True)
+train.drop(train[(train['GrLivArea']>4500) & (train['SalePrice']<300000)].index, inplace=True)
+train.reset_index(drop=True, inplace=True)
+```
+
+4. 分离训练特征和标注值备用
+```
+train_labels = train['SalePrice'].reset_index(drop=True)
+train_features = train.drop(['SalePrice'], axis=1)
+test_features = test
+```
+
+
+5. 将训练特征和测试特征合并，以便于特征变换阶段的整体管道处理。
+```
+all_features = pd.concat([train_features, test_features]).reset_index(drop=True)
+all_features.shape
+```
+![得到的数据形状]()
+
+6. 填充缺失值
+在这里，需要对缺失值的程度设定一个阀值。
+```
+def percent_missing(df):
+    data = pd.DataFrame(df)
+    df_cols = list(pd.DataFrame(data))
+    dict_x = {}
+    for i in range(0, len(df_cols)):
+        dict_x.update({df_cols[i]: round(data[df_cols[i]].isnull().mean()*100,2)})
+    
+    return dict_x
+
+missing = percent_missing(all_features)
+df_miss = sorted(missing.items(), key=lambda x: x[1], reverse=True)
+print('Percent of missing data')
+df_miss[0:10]
+```
+![缺失值情况]()
+
+对缺失值进行可视化展示
+```
+sns.set_style("white")
+f, ax = plt.subplots(figsize=(8, 7))
+sns.set_color_codes(palette='deep')
+missing = round(train.isnull().mean()*100,2)
+missing = missing[missing > 0]
+missing.sort_values(inplace=True)
+missing.plot.bar(color="b")
+# Tweak the visual presentation
+ax.xaxis.grid(False)
+ax.set(ylabel="Percent of missing values")
+ax.set(xlabel="Features")
+ax.set(title="Percent missing data by feature")
+sns.despine(trim=True, left=True)
+```
+![缺失值的可视化展示]()
+
+现在，可以浏览每个属性的缺失情况，并计算相应的缺失值了。
+
