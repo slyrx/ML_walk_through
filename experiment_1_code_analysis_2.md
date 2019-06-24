@@ -71,3 +71,4 @@ for i, feature in enumerate(list(train[numeric]), 1):
         
 plt.show()
 ```
+![Features: a deep dive](./img/feature_data_scatter_viewer.jpg)
