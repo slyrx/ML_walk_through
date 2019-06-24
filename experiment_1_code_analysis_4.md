@@ -80,3 +80,95 @@ stack_gen = StackingCVRegressor(regressors=(xgboost, lightgbm, svr, ridge, gbr, 
                                 meta_regressor=xgboost,
                                 use_features_in_secondary=True)
 ```
+
+##### 训练模型
+
+1. 对每种模型进行交叉验证，得出得分。
+```
+scores = {}
+
+score = cv_rmse(lightgbm)
+print("lightgbm: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['lgb'] = (score.mean(), score.std())
+```
+![lightgbm cross validation score]()
+
+```
+score = cv_rmse(xgboost)
+print("xgboost: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['xgb'] = (score.mean(), score.std())
+```
+![xgboost cross validation score]()
+
+```
+score = cv_rmse(svr)
+print("SVR: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['svr'] = (score.mean(), score.std())
+```
+![SVR cross validation score]()
+
+```
+score = cv_rmse(ridge)
+print("ridge: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['ridge'] = (score.mean(), score.std())
+```
+![ridge cross validation score]()
+
+```
+score = cv_rmse(rf)
+print("rf: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['rf'] = (score.mean(), score.std())
+```
+![rf cross validation score]()
+
+```
+score = cv_rmse(gbr)
+print("gbr: {:.4f} ({:.4f})".format(score.mean(), score.std()))
+scores['gbr'] = (score.mean(), score.std())
+```
+![gbr cross validation score]()
+
+2. 拟合模型
+
+```
+print('stack_gen')
+stack_gen_model = stack_gen.fit(np.array(X), np.array(train_labels))
+```
+![stack_gen]()
+
+```
+print('lightgbm')
+lgb_model_full_data = lightgbm.fit(X, train_labels)
+```
+![lightgbm]()
+
+```
+print('xgboost')
+xgb_model_full_data = xgboost.fit(X, train_labels)
+```
+![xgboost]()
+
+```
+print('Svr')
+svr_model_full_data = svr.fit(X, train_labels)
+```
+![Svr]()
+
+
+```
+print('Ridge')
+ridge_model_full_data = ridge.fit(X, train_labels)
+```
+![Ridge]()
+
+```
+print('RandomForest')
+rf_model_full_data = rf.fit(X, train_labels)
+```
+![RandomForest]()
+
+```
+print('GradientBoosting')
+gbr_model_full_data = gbr.fit(X, train_labels)
+```
+![GradientBoosting]()
