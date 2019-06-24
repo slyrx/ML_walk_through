@@ -80,3 +80,13 @@ plt.subplots(figsize=(15,12))
 sns.heatmap(corr, vmax=0.9, cmap="Blues", square=True)
 ```
 ![特征关系](./img/feature_corr.jpg)
+
+4. 接下来绘制销售价格与数据集中一些特征是如何相关的
++ 以箱图展示“销售价格”和“总体质量”(OverallQual)间的关系
+```
+data = pd.concat([train['SalePrice'], train['OverallQual']], axis=1)
+f, ax = plt.subplots(figsize=(8, 6))
+fig = sns.boxplot(x=train['OverallQual'], y="SalePrice", data=data)
+fig.axis(ymin=0, ymax=800000);
+```
+![箱图展示“销售价格”和“总体质量”(OverallQual)间的关系](./img/box_saleprice_overallqual.jpg)
