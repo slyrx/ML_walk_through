@@ -195,3 +195,28 @@ print('RMSLE score on train data:')
 print(blended_score)
 ```
 ![RMSLE score on train data]()
+
+##### 确定表现最优的模型
+通过展示每个模型预测结果的方式
+```
+sns.set_style("white")
+fig = plt.figure(figsize=(24, 12))
+
+ax = sns.pointplot(x=list(scores.keys()), y=[score for score, _ in scores.values()], markers=['o'], linestyles=['-'])
+for i, score in enumerate(scores.values()):
+    ax.text(i, score[0] + 0.002, '{:.6f}'.format(score[0]), horizontalalignment='left', size='large', color='black', weight='semibold')
+
+plt.ylabel('Score (RMSE)', size=20, labelpad=12.5)
+plt.xlabel('Model', size=20, labelpad=12.5)
+plt.tick_params(axis='x', labelsize=13.5)
+plt.tick_params(axis='y', labelsize=12.5)
+
+plt.title('Scores of Models', size=20)
+
+plt.show()
+```
+![各模型的表现](https://mmbiz.qpic.cn/mmbiz_png/YicUhk5aAGtCbS3CUeibENjz7DAGKZaIx8mfiazuu8fHPM89YxtFW48xYAMGpSicZDCoa4Uqicq9ibjapFUWaAuEuH2g/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+通过图中的展示可以看出，混合模型的结果明显优于其他模型，RMSLE成绩为0.075。它也是最终预测中使用的模型。
+
+
