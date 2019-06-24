@@ -72,3 +72,11 @@ for i, feature in enumerate(list(train[numeric]), 1):
 plt.show()
 ```
 ![Features: a deep dive](./img/feature_data_scatter_viewer.jpg)
+
+3. 再通过**train.corr() 特征关系函数**绘制出这些特征之间的关系，以及特征和预测价格之间的关系。
+```
+corr = train.corr()
+plt.subplots(figsize=(15,12))
+sns.heatmap(corr, vmax=0.9, cmap="Blues", square=True)
+```
+![特征关系](./img/feature_corr.jpg)
