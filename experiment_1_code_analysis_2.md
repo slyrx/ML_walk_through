@@ -296,3 +296,14 @@ def handle_missing(features):
 
 all_features = handle_missing(all_features)
 ```
+
+再次查看缺失值的情况，以确保100%处理了所有的缺失数据。
+```
+missing = percent_missing(all_features)
+df_miss = sorted(missing.items(), key=lambda x: x[1], reverse=True)
+print('Percent of missing data')
+df_miss[0:10]
+```
+![处理后缺失情况的展示]()
+
+可以看到现在已经没有缺失数据了。
