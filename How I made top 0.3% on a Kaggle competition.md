@@ -16,7 +16,7 @@
 ![model_training_advanced_regression](https://www.kaggleusercontent.com/kf/15425540/eyJhbGciOiJkaXIiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0..pNKpx8_CeoQisuhcwZ4Yeg.FXDneIjyHdX--MbtjlXjs2ndp02Me5hADRWRp5T2kgeWkpJBJFgGnzj5A-nEohAHXScM6QHWl3GO9Aek69pPAL9xwZHXgr2EAjLmqEl7ApM4Ov8Kc5DipP5QArNRg3H7ryuX1jIo3XL0l6U0kzJ10saOX8TaaGIq6ozK7q_YuXHpRZJTsC5D8646FzBk7WYt.rbzFz2nnm-Y3X_8onDyPDQ/__results___files/__results___2_0.png)
 
 ### [实践前提](https://github.com/slyrx/ML_walk_through/edit/master/experiment_1_code_analysis_1.md)
-### [代码正文]（）
+### [代码正文](https://github.com/slyrx/ML_walk_through/edit/master/experiment_1_code_analysis_2.md)
 
 ### 使用模型
 1. ridge
