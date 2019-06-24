@@ -242,3 +242,57 @@ sns.despine(trim=True, left=True)
 
 现在，可以浏览每个属性的缺失情况，并计算相应的缺失值了。
 
+7. 一些非数值型的预测变量因为在存储时被当作整型存储了，这里需要将它们转换回字符类型
+```
+all_features['MSSubClass'] = all_features['MSSubClass'].apply(str)
+all_features['YrSold'] = all_features['YrSold'].astype(str)
+all_features['MoSold'] = all_features['MoSold'].astype(str)
+```
+
+8.
+```
+def handle_missing(features):
+    # the data description states that NA refers to typical ('Typ') values
+    features['Functional'] = features['Functional'].fillna('Typ')
+    # Replace the missing values in each of the columns below with their mode
+    features['Electrical'] = features['Electrical'].fillna("SBrkr")
+    features['KitchenQual'] = features['KitchenQual'].fillna("TA")
+    features['Exterior1st'] = features['Exterior1st'].fillna(features['Exterior1st'].mode()[0])
+    features['Exterior2nd'] = features['Exterior2nd'].fillna(features['Exterior2nd'].mode()[0])
+    features['SaleType'] = features['SaleType'].fillna(features['SaleType'].mode()[0])
+    features['MSZoning'] = features.groupby('MSSubClass')['MSZoning'].transform(lambda x: x.fillna(x.mode()[0]))
+    
+    # the data description stats that NA refers to "No Pool"
+    features["PoolQC"] = features["PoolQC"].fillna("None")
+    # Replacing the missing values with 0, since no garage = no cars in garage
+    for col in ('GarageYrBlt', 'GarageArea', 'GarageCars'):
+        features[col] = features[col].fillna(0)
+    # Replacing the missing values with None
+    for col in ['GarageType', 'GarageFinish', 'GarageQual', 'GarageCond']:
+        features[col] = features[col].fillna('None')
+    # NaN values for these categorical basement features, means there's no basement
+    for col in ('BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2'):
+        features[col] = features[col].fillna('None')
+        
+    # Group the by neighborhoods, and fill in missing value by the median LotFrontage of the neighborhood
+    features['LotFrontage'] = features.groupby('Neighborhood')['LotFrontage'].transform(lambda x: x.fillna(x.median()))
+
+    # We have no particular intuition around how to fill in the rest of the categorical features
+    # So we replace their missing values with None
+    objects = []
+    for i in features.columns:
+        if features[i].dtype == object:
+            objects.append(i)
+    features.update(features[objects].fillna('None'))
+        
+    # And we do the same thing for numerical features, but this time with 0s
+    numeric_dtypes = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+    numeric = []
+    for i in features.columns:
+        if features[i].dtype in numeric_dtypes:
+            numeric.append(i)
+    features.update(features[numeric].fillna(0))    
+    return features
+
+all_features = handle_missing(all_features)
+```
